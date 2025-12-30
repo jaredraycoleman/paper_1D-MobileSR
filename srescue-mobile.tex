@@ -51,6 +51,10 @@
 %\def\qed{\hfill\rule{2mm}{2mm}}
 %\newcommand{\ep}{\qed}
 
+
+\newcommand\JC[1]{{\color{blue} JC: #1}}         % Jared:    Use \JC{my note}
+
+
 \begin{document}
 
 \title{The Good Cop and the Oblivious Fugitive}
@@ -662,7 +666,7 @@ $$
 since the fast agent first travels to the origin (time $s$), then chases the fugitive who is now at position $d + sv$ (additional time $\frac{d+sv}{1-v}$). The total algorithm time including delivery is $2T_A - s$. The competitive ratio in this case is
 \begin{equation}
 \label{eq:cr-case1}
-CR_1 = \frac{2 \cdot \frac{d+s}{1-v} - s}{\frac{2(d-s)}{1-v} + s} = -1 - \frac{4d}{-2d + s + sv}.
+CR_1 = \frac{2 \cdot \frac{d+s}{1-v} - s}{\frac{2(d-s)}{1-v} + s} = \frac{4d}{2d - s - sv} - 1.
 \end{equation}
 
 {\bf Case 2: The slow agent catches the fugitive first.}\\
@@ -681,21 +685,18 @@ $$
 Note that we need to account for when the fast agent reaches the origin relative to when the slow agent catches the fugitive. The fast agent reaches the origin at time $s$, then moves outward. The competitive ratio in this case is
 \begin{equation}
 \label{eq:cr-case2}
-CR_2 = \frac{(v-1)\left(-s + \frac{2\left(2s + \frac{d-s}{u^2 - uv}\right)}{1+u}\right)}{-2d + s + sv}.
+CR_2 = \frac{(1-v)\left(\frac{2\left(2s + \frac{d-s}{u^2 - uv}\right)}{1+u} - s\right)}{2d - s - sv}.
 \end{equation}
 
 Case 2 occurs when $u > v$ and the slow agent catches the fugitive before the fast agent would (i.e., the capture time for the slow agent is less than that for the fast agent).
 
 \subsection{Comparison with Single-Agent Algorithm}
 
-If the speed $v$ is known, the fast agent could alternatively execute the single-agent algorithm from Section~\ref{Speed $v$ is Known to the Searcher}, which achieves a competitive ratio of
-$$
-CR_{solo} = 1 + \frac{v + \sqrt{2-v^2}}{1-v}.
-$$
+If the speed $v$ is known, the fast agent could alternatively execute the single-agent algorithm from Section~\ref{Speed $v$ is Known to the Searcher}.
 
 The split-up algorithm may outperform the single-agent algorithm in certain parameter regimes. Specifically, when the slow agent's speed $u$ is sufficiently larger than the fugitive's speed $v$, the cooperative strategy can reduce the competitive ratio by having the slow agent intercept the fugitive while the fast agent handles the delivery.
 
-Determining the exact conditions under which $CR_2 \leq CR_{solo}$ leads to a complicated expression in $u$, $v$, $s$, and $d$. The optimal strategy selection depends on the specific values of these parameters.
+\JC{TODO: determine the conditions under which the split-up algorithm outperforms the single-agent algorithm.}
 
 \section{Conclusion}
 \label{sec:conclusion}
