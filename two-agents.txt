@@ -1,0 +1,38 @@
+There are two policemen, one with speed 1 and the other with speed u < 1. The policemen are lazy and were chatting with each other.
+By the time they get the alert that a fugitive has escaped, they are already at an unknown distance d from the jail (and may have passed them).
+Their initial location is distance s from the jail.
+
+The target is moving away from the jail at speed v < 1.
+
+One option is for the faster policeman to just execute the single-agent algorithms by herself. Another algorithm, which we call the split-up algorithm, is for the faster agent to move toward the jail (origin) and the slow agent away from the jail. If the faster agent reaches the jail and does not find the fugitive, then it must be that d > s and so it starts moving away from the jail. In this case, there are two cases that may occur:
+1. The faster agent may pass the slower agent before it finds the fugitive. In this case the competitive ratio can be written:
+Opt:=(2(d-s)/(1-v)+s) (*In the offline alg, the fast agent goes straight to the target and back to the jail*)
+CaptureTimeCase1:=(d+s)/(1-v) (*Time when fast agent catches up to escaping fugitive without slow agent's help*)
+CRCase1=FullSimplify[(2CaptureTimeCase1-s)/Opt]
+Out[45]= -1-(4 d)/(-2 d+s+s v)
+2. The slower agent finds the target first and so turns around to start moving back to the jail with it. Then, the faster agent will encounter the slower agent with the fugitive, can pick him up and finish the delivery. In this case the competitive ratio can be written:
+CaptureTimeCase2:=(d-s)/(u-v) (*Time slow agent catches up to fugitive*)
+CaptureLocationCase2:=s+CaptureTimeCase2/u  (*Location (distance from 0) that slow agent catches up to fugitive*)
+MeetingTimeCase2:=((CaptureLocationCase2-s)+(2s) )/(1+u)
+CRCase2=FullSimplify[(2*MeetingTimeCase2-s)/Opt]
+Out[49]= ((-1+v) (-s+(2 (2 s+(d-s)/(u^2-u v)))/(1+u)))/(-2 d+s+s v)
+Notice that case 2 can only occur when u > v and when CaptureTimeCase2 < CaptureTimeCase1.
+
+Thus the competitive ratio is:
+In[55]:= CRAlg=FullSimplify[
+Piecewise[{{CRCase1,u<v || CaptureTimeCase1<CaptureTimeCase2},{CRCase2, True}}],
+Assumptions->0<v<1&&0<u<1
+]
+Out[55]= \[Piecewise]	-1-(4 d)/(-2 d+s+s v)	u<v||(d (-1+u)+s (1+u-2 v)) (u-v)<0
+((-1+v) (-s+(2 (2 s+(d-s)/(u^2-u v)))/(1+u)))/(-2 d+s+s v)	True
+
+
+If v is known, then, again, the fast agent *could* just execute the solo algorithm, which we know has a CR of:
+In[54]:= CRAloneKnownV=1+(v+Sqrt[2-v^2])/(2(1-v))*s
+Out[54]= 1+(s (v+Sqrt[2-v^2]))/(2 (1-v))
+In[57]:= Refine[Reduce[CRCase2<=CRAloneKnownV&&0<v<1&&0<u<1&&0<s<d,u],0<v<1&&0<u<1&&0<s<d]
+Out[57]= $Aborted
+In[59]:= FullSimplify[Solve[CRCase2==CRAloneKnownV,u],Assumptions->0<v<1&&0<u<1&&0<s<d]
+Out[58]= {{u->-((4 d-8 s-8 d v+12 s v+2 d s v-s^2 v+4 d v^2-2 d s v^2-4 s v^3+s^2 v^3+2 d s Sqrt[2-v^2]-s^2 Sqrt[2-v^2]-2 d s v Sqrt[2-v^2]+s^2 v^2 Sqrt[2-v^2])/(3 (4 d-4 d v-4 s v+2 d s v-s^2 v+4 s v^2-s^2 v^2+2 d s Sqrt[2-v^2]-s^2 Sqrt[2-v^2]-s^2 v Sqrt[2-v^2])))-(2^(1/3) (-(4 d-8 s-8 d v+ \[CenterEllipsis]15\[CenterEllipsis] +s^2 v^2 Sqrt[2-v^2])^2+3 ( \[CenterEllipsis]1\[CenterEllipsis] ) (-4 d v+8 s v+ \[CenterEllipsis]7\[CenterEllipsis] +s^2 v^3-2 d s v Sqrt[2-v^2]+s^2 v Sqrt[2-v^2]+s^2 v^2 Sqrt[2-v^2])))/(3 (4 d-4 d v-4 s v+2 d s v-s^2 v+4 s v^2-s^2 v^2+2 d s Sqrt[2-v^2]-s^2 Sqrt[2-v^2]-s^2 v Sqrt[2-v^2]) ( \[CenterEllipsis]304\[CenterEllipsis] +Sqrt[( \[CenterEllipsis]1\[CenterEllipsis] )^2+4  \[CenterEllipsis]1\[CenterEllipsis] ^3])^(1/3))+(1600 d^3-960 d^2 s-1536 d s^2+ \[CenterEllipsis]296\[CenterEllipsis] +48 s^5 v^8 Sqrt[2-v^2]-4 s^6 v^8 Sqrt[2-v^2]+Sqrt[( \[CenterEllipsis]1\[CenterEllipsis] )^2+4 (- \[CenterEllipsis]1\[CenterEllipsis] ^2+ \[CenterEllipsis]1\[CenterEllipsis] )^3])^(1/3)/(3 2^(1/3) (4 d-4 d v-4 s v+2 d s v-s^2 v+4 s v^2-s^2 v^2+2 d s Sqrt[2-v^2]-s^2 Sqrt[2-v^2]-s^2 v Sqrt[2-v^2]))},{u-> \[CenterEllipsis]1\[CenterEllipsis] },{u->-(( \[CenterEllipsis]20\[CenterEllipsis] +s^2 v^2 Sqrt[ \[CenterEllipsis]1\[CenterEllipsis] ])/(3 ( \[CenterEllipsis]1\[CenterEllipsis] )))+ \[CenterEllipsis]1\[CenterEllipsis] / \[CenterEllipsis]1\[CenterEllipsis] - \[CenterEllipsis]1\[CenterEllipsis] / \[CenterEllipsis]1\[CenterEllipsis] }}
+Size in memory: 1 MB 	Show more  |  Show all  |  Iconize  |  Store full expression in notebook
+

@@ -639,10 +639,68 @@ which completes the proof of the theorem.
 \end{proof}
 
 
+\section{Two Agents}
+\label{sec:two-agents}
+
+We now consider a variation of the problem where there are two policemen available to catch the fugitive. One policeman has speed $1$ (the ``fast'' agent) and the other has speed $u < 1$ (the ``slow'' agent). Both agents start at the same position $s \geq 0$ and must work together to catch the fugitive and return him to jail. As before, the fugitive starts at an unknown distance $d > 0$ from the origin and moves away from the jail at constant speed $v < 1$.
+
+\subsection{The Split-Up Algorithm}
+
+One option is for the faster policeman to simply execute the single-agent algorithm by himself, ignoring the slower agent entirely. However, we consider an alternative approach which we call the \emph{split-up algorithm}. In this algorithm, the fast agent moves toward the jail (origin) while the slow agent moves away from the jail. If the fast agent reaches the jail without finding the fugitive, then it must be that $d > s$, and so the fast agent starts moving away from the jail.
+
+We analyze the competitive ratio of this algorithm. Two cases may occur depending on which agent catches the fugitive first.
+
+{\bf Case 1: The fast agent catches the fugitive.}\\
+If the fast agent passes the slow agent before the slow agent finds the fugitive, or if $u < v$ (so the slow agent cannot catch up to the fugitive at all), then the fast agent catches the fugitive. The optimal offline time is
+$$
+T_{opt} = \frac{2(d-s)}{1-v} + s,
+$$
+since in the optimal algorithm the fast agent goes straight to the target and returns to the jail. The fast agent's capture time is
+$$
+T_A = \frac{d+s}{1-v},
+$$
+since the fast agent first travels to the origin (time $s$), then chases the fugitive who is now at position $d + sv$ (additional time $\frac{d+sv}{1-v}$). The total algorithm time including delivery is $2T_A - s$. The competitive ratio in this case is
+\begin{equation}
+\label{eq:cr-case1}
+CR_1 = \frac{2 \cdot \frac{d+s}{1-v} - s}{\frac{2(d-s)}{1-v} + s} = -1 - \frac{4d}{-2d + s + sv}.
+\end{equation}
+
+{\bf Case 2: The slow agent catches the fugitive first.}\\
+This case can only occur when $u > v$. The slow agent catches the fugitive in time
+$$
+T_{capture} = \frac{d-s}{u-v}.
+$$
+At this time, the slow agent (with the fugitive) is at location
+$$
+L_{capture} = s + \frac{d-s}{u-v} \cdot u = s + \frac{u(d-s)}{u-v}.
+$$
+Meanwhile, the fast agent has traveled to the origin and is now moving away from it. The fast agent and slow agent (now moving toward the origin with the fugitive at speed $u$) will meet. The meeting time after capture is
+$$
+T_{meet} = \frac{L_{capture} - 0}{1 + u} = \frac{s + \frac{u(d-s)}{u-v}}{1+u}.
+$$
+Note that we need to account for when the fast agent reaches the origin relative to when the slow agent catches the fugitive. The fast agent reaches the origin at time $s$, then moves outward. The competitive ratio in this case is
+\begin{equation}
+\label{eq:cr-case2}
+CR_2 = \frac{(v-1)\left(-s + \frac{2\left(2s + \frac{d-s}{u^2 - uv}\right)}{1+u}\right)}{-2d + s + sv}.
+\end{equation}
+
+Case 2 occurs when $u > v$ and the slow agent catches the fugitive before the fast agent would (i.e., the capture time for the slow agent is less than that for the fast agent).
+
+\subsection{Comparison with Single-Agent Algorithm}
+
+If the speed $v$ is known, the fast agent could alternatively execute the single-agent algorithm from Section~\ref{Speed $v$ is Known to the Searcher}, which achieves a competitive ratio of
+$$
+CR_{solo} = 1 + \frac{v + \sqrt{2-v^2}}{1-v}.
+$$
+
+The split-up algorithm may outperform the single-agent algorithm in certain parameter regimes. Specifically, when the slow agent's speed $u$ is sufficiently larger than the fugitive's speed $v$, the cooperative strategy can reduce the competitive ratio by having the slow agent intercept the fugitive while the fast agent handles the delivery.
+
+Determining the exact conditions under which $CR_2 \leq CR_{solo}$ leads to a complicated expression in $u$, $v$, $s$, and $d$. The optimal strategy selection depends on the specific values of these parameters.
+
 \section{Conclusion}
 \label{sec:conclusion}
 
-We analyzed the competitive ratio of algorithms for a policeman to catch a mobile oblivious fugitive and bring him back to jail. We gave optimal algorithms in all knowledge instances concerning the speed $v<1$ and starting position $d$ of the fugitive.
+We analyzed the competitive ratio of algorithms for a policeman to catch a mobile oblivious fugitive and bring him back to jail. We gave optimal algorithms in all knowledge instances concerning the speed $v<1$ and starting position $d$ of the fugitive. We also considered a two-agent variant where a fast and slow policeman can cooperate using a split-up strategy, where the slow agent chases the fugitive while the fast agent positions itself for efficient delivery.
 
 
 

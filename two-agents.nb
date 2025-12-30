@@ -1,0 +1,725 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 14.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     27744,        715]
+NotebookOptionsPosition[     25762,        674]
+NotebookOutlinePosition[     26172,        690]
+CellTagsIndexPosition[     26129,        687]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell["\<\
+There are two policemen, one with speed 1 and the other with speed u < 1. The \
+policemen are lazy and were chatting with each other.
+By the time they get the alert that a fugitive has escaped, they are already \
+at an unknown distance d from the jail (and may have passed them).
+Their initial location is distance s from the jail.
+
+The target is moving away from the jail at speed v < 1.
+
+One option is for the faster policeman to just execute the single-agent \
+algorithms by herself. Another algorithm, which we call the split-up \
+algorithm, is for the faster agent to move toward the jail (origin) and the \
+slow agent away from the jail. If the faster agent reaches the jail and does \
+not find the fugitive, then it must be that d > s and so it starts moving \
+away from the jail. In this case, there are two cases that may occur:
+1. The faster agent may pass the slower agent before it finds the fugitive. \
+In this case the competitive ratio can be written:\
+\>", "Text",
+ CellChangeTimes->{{3.976051261404194*^9, 3.976051554495552*^9}, {
+  3.976052230712471*^9, 
+  3.976052252216646*^9}},ExpressionUUID->"5704678a-93ae-2a4d-baf4-\
+fa9cda6f53d3"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Opt", ":=", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"2", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"d", "-", "s"}], ")"}], "/", 
+       RowBox[{"(", 
+        RowBox[{"1", "-", "v"}], ")"}]}]}], "+", "s"}], ")"}]}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"In", " ", "the", " ", "offline", " ", "alg"}], ",", " ", 
+    RowBox[{
+    "the", " ", "fast", " ", "agent", " ", "goes", " ", "straight", " ", "to",
+      " ", "the", " ", "target", " ", "and", " ", "back", " ", "to", " ", 
+     "the", " ", "jail"}]}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"CaptureTimeCase1", ":=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"d", "+", "s"}], ")"}], "/", 
+    RowBox[{"(", 
+     RowBox[{"1", "-", "v"}], ")"}]}]}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+   "Time", " ", "when", " ", "fast", " ", "agent", " ", "catches", " ", "up", 
+    " ", "to", " ", "escaping", " ", "fugitive", " ", "without", " ", "slow", 
+    " ", 
+    RowBox[{"agent", "'"}], "s", " ", "help"}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{"CRCase1", "=", 
+  RowBox[{"FullSimplify", "[", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"2", "CaptureTimeCase1"}], "-", "s"}], ")"}], "/", "Opt"}], 
+   "]"}]}]}], "Input",
+ CellChangeTimes->{{3.9760515625051174`*^9, 3.9760515816122456`*^9}, {
+  3.976051878502571*^9, 3.976051894065832*^9}, {3.976051942581236*^9, 
+  3.9760520697623672`*^9}, {3.976052326343033*^9, 3.976052395993471*^9}, {
+  3.9760524500355644`*^9, 3.9760524871265545`*^9}, {3.9760525812823505`*^9, 
+  3.9760525983249874`*^9}},ExpressionUUID->"5a9addc3-3c10-3e46-ac75-\
+92061952b25b"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"-", "1"}], "-", 
+  FractionBox[
+   RowBox[{"4", " ", "d"}], 
+   RowBox[{
+    RowBox[{
+     RowBox[{"-", "2"}], " ", "d"}], "+", "s", "+", 
+    RowBox[{"s", " ", "v"}]}]]}]], "Output",
+ CellChangeTimes->{
+  3.9760520699625893`*^9, 3.9760523971436253`*^9, {3.976052471363926*^9, 
+   3.97605251711936*^9}},
+ CellLabel->"Out[45]=",ExpressionUUID->"bdc4a57a-0b69-c348-a0b8-d6fb2126dcbd"]
+}, Open  ]],
+
+Cell["\<\
+2. The slower agent finds the target first and so turns around to start \
+moving back to the jail with it. Then, the faster agent will encounter the \
+slower agent with the fugitive, can pick him up and finish the delivery. In \
+this case the competitive ratio can be written:\
+\>", "Text",
+ CellChangeTimes->{{3.976051586506386*^9, 3.976051648660137*^9}, {
+  3.976051747266962*^9, 
+  3.9760517628018303`*^9}},ExpressionUUID->"dd3704f2-9452-384f-b390-\
+d68d1a3f9953"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"CaptureTimeCase2", ":=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"d", "-", "s"}], ")"}], "/", 
+    RowBox[{"(", 
+     RowBox[{"u", "-", "v"}], ")"}]}]}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+   "Time", " ", "slow", " ", "agent", " ", "catches", " ", "up", " ", "to", 
+    " ", "fugitive"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"CaptureLocationCase2", ":=", 
+   RowBox[{"s", "+", 
+    RowBox[{"CaptureTimeCase2", "/", "u"}]}]}], "  ", 
+  RowBox[{"(*", 
+   RowBox[{"Location", " ", 
+    RowBox[{"(", 
+     RowBox[{"distance", " ", "from", " ", "0"}], ")"}], " ", "that", " ", 
+    "slow", " ", "agent", " ", "catches", " ", "up", " ", "to", " ", 
+    "fugitive"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{"MeetingTimeCase2", ":=", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"CaptureLocationCase2", "-", "s"}], ")"}], "+", 
+     RowBox[{"(", 
+      RowBox[{"2", "s"}], ")"}]}], " ", ")"}], "/", 
+   RowBox[{"(", 
+    RowBox[{"1", "+", "u"}], ")"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{"CRCase2", "=", 
+  RowBox[{"FullSimplify", "[", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"2", "*", "MeetingTimeCase2"}], "-", "s"}], ")"}], "/", "Opt"}],
+    "]"}]}]}], "Input",
+ CellChangeTimes->{{3.9760516530408134`*^9, 3.9760517744774113`*^9}, {
+  3.9760518062467976`*^9, 3.9760518630813923`*^9}, {3.9760521001683617`*^9, 
+  3.9760521507825623`*^9}, {3.9760524008832626`*^9, 3.9760524134618855`*^9}, {
+  3.9760526024333305`*^9, 
+  3.976052628727457*^9}},ExpressionUUID->"222a6651-84a3-be43-83b5-\
+169416964b6a"],
+
+Cell[BoxData[
+ FractionBox[
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"-", "1"}], "+", "v"}], ")"}], " ", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"-", "s"}], "+", 
+     FractionBox[
+      RowBox[{"2", " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"2", " ", "s"}], "+", 
+         FractionBox[
+          RowBox[{"d", "-", "s"}], 
+          RowBox[{
+           SuperscriptBox["u", "2"], "-", 
+           RowBox[{"u", " ", "v"}]}]]}], ")"}]}], 
+      RowBox[{"1", "+", "u"}]]}], ")"}]}], 
+  RowBox[{
+   RowBox[{
+    RowBox[{"-", "2"}], " ", "d"}], "+", "s", "+", 
+   RowBox[{"s", " ", "v"}]}]]], "Output",
+ CellChangeTimes->{{3.9760521153126945`*^9, 3.9760521522698*^9}, 
+   3.9760524138097496`*^9, 3.976052473101959*^9, 3.976052519545639*^9},
+ CellLabel->"Out[49]=",ExpressionUUID->"9bdfd926-b600-674b-917c-5fbde5bb249d"]
+}, Open  ]],
+
+Cell["\<\
+Notice that case 2 can only occur when u > v and when CaptureTimeCase2 < \
+CaptureTimeCase1.
+
+Thus the competitive ratio is:\
+\>", "Text",
+ CellChangeTimes->{{3.976052277820963*^9, 3.976052287564636*^9}, {
+  3.976052548277046*^9, 3.976052578980589*^9}, {3.976052670197895*^9, 
+  3.97605273780904*^9}},ExpressionUUID->"5afda14c-ce28-6a47-877d-\
+e1a8fa4da692"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"CRAlg", "=", 
+  RowBox[{"FullSimplify", "[", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Piecewise", "[", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"CRCase1", ",", 
+         RowBox[{
+          RowBox[{"u", "<", "v"}], " ", "||", " ", 
+          RowBox[{"CaptureTimeCase1", "<", "CaptureTimeCase2"}]}]}], "}"}], 
+       ",", 
+       RowBox[{"{", 
+        RowBox[{"CRCase2", ",", " ", "True"}], "}"}]}], "}"}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Assumptions", "->", 
+     RowBox[{
+      RowBox[{"0", "<", "v", "<", "1"}], "&&", 
+      RowBox[{"0", "<", "u", "<", "1"}]}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.976052739110138*^9, 3.9760528225521297`*^9}, 
+   3.9760530890690327`*^9},
+ CellLabel->"In[55]:=",ExpressionUUID->"1790bd2f-64d7-f84b-81fa-4f1272d5c939"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {"\[Piecewise]", GridBox[{
+       {
+        RowBox[{
+         RowBox[{"-", "1"}], "-", 
+         FractionBox[
+          RowBox[{"4", " ", "d"}], 
+          RowBox[{
+           RowBox[{
+            RowBox[{"-", "2"}], " ", "d"}], "+", "s", "+", 
+           RowBox[{"s", " ", "v"}]}]]}], 
+        RowBox[{
+         RowBox[{"u", "<", "v"}], "||", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"d", " ", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"-", "1"}], "+", "u"}], ")"}]}], "+", 
+             RowBox[{"s", " ", 
+              RowBox[{"(", 
+               RowBox[{"1", "+", "u", "-", 
+                RowBox[{"2", " ", "v"}]}], ")"}]}]}], ")"}], " ", 
+           RowBox[{"(", 
+            RowBox[{"u", "-", "v"}], ")"}]}], "<", "0"}]}]},
+       {
+        FractionBox[
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"-", "1"}], "+", "v"}], ")"}], " ", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"-", "s"}], "+", 
+            FractionBox[
+             RowBox[{"2", " ", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"2", " ", "s"}], "+", 
+                FractionBox[
+                 RowBox[{"d", "-", "s"}], 
+                 RowBox[{
+                  SuperscriptBox["u", "2"], "-", 
+                  RowBox[{"u", " ", "v"}]}]]}], ")"}]}], 
+             RowBox[{"1", "+", "u"}]]}], ")"}]}], 
+         RowBox[{
+          RowBox[{
+           RowBox[{"-", "2"}], " ", "d"}], "+", "s", "+", 
+          RowBox[{"s", " ", "v"}]}]], 
+        TagBox["True",
+         "PiecewiseDefault",
+         AutoDelete->True]}
+      },
+      AllowedDimensions->{2, Automatic},
+      Editable->True,
+      GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Baseline}}},
+      GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{1.}}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.84]}, 
+          Offset[0.27999999999999997`]}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}},
+      Selectable->True]}
+   },
+   GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Baseline}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{1.}}},
+   GridBoxSpacings->{"Columns" -> {
+       Offset[0.27999999999999997`], {
+        Offset[0.35]}, 
+       Offset[0.27999999999999997`]}, "Rows" -> {
+       Offset[0.2], {
+        Offset[0.4]}, 
+       Offset[0.2]}}],
+  "Piecewise",
+  DeleteWithContents->True,
+  Editable->False,
+  SelectWithContents->True,
+  Selectable->False,
+  StripWrapperBoxes->True]], "Output",
+ CellChangeTimes->{3.976052823412569*^9, 3.9760530893679943`*^9},
+ CellLabel->"Out[55]=",ExpressionUUID->"42c39700-a0ae-a144-b912-c20cc093ea50"]
+}, Open  ]],
+
+Cell["\<\
+If v is known, then, again, the fast agent *could* just execute the solo \
+algorithm, which we know has a CR of:\
+\>", "Text",
+ CellChangeTimes->{{3.9760528435057507`*^9, 3.9760528634518642`*^9}, {
+  3.9760529649723606`*^9, 
+  3.976053001370552*^9}},ExpressionUUID->"f407cba7-a904-2c42-a135-\
+8a053915c72d"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"CRAloneKnownV", "=", 
+  RowBox[{"1", "+", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"v", "+", 
+       RowBox[{"Sqrt", "[", 
+        RowBox[{"2", "-", 
+         RowBox[{"v", "^", "2"}]}], "]"}]}], ")"}], "/", 
+     RowBox[{"(", 
+      RowBox[{"2", 
+       RowBox[{"(", 
+        RowBox[{"1", "-", "v"}], ")"}]}], ")"}]}], "*", "s"}]}]}]], "Input",
+ CellChangeTimes->{{3.9760529087458706`*^9, 3.9760529176572113`*^9}, {
+  3.976052950101206*^9, 3.976052955486397*^9}, {3.976053003732832*^9, 
+  3.976053037236355*^9}},
+ CellLabel->"In[54]:=",ExpressionUUID->"a8da8378-443f-b743-8e86-b3f5ebde1bd5"],
+
+Cell[BoxData[
+ RowBox[{"1", "+", 
+  FractionBox[
+   RowBox[{"s", " ", 
+    RowBox[{"(", 
+     RowBox[{"v", "+", 
+      SqrtBox[
+       RowBox[{"2", "-", 
+        SuperscriptBox["v", "2"]}]]}], ")"}]}], 
+   RowBox[{"2", " ", 
+    RowBox[{"(", 
+     RowBox[{"1", "-", "v"}], ")"}]}]]}]], "Output",
+ CellChangeTimes->{3.976052959376253*^9, 3.976053053327738*^9},
+ CellLabel->"Out[54]=",ExpressionUUID->"497da2d3-571b-cb4f-9ec1-a50fd9dec744"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Refine", "[", 
+  RowBox[{
+   RowBox[{"Reduce", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"CRCase2", "<=", "CRAloneKnownV"}], "&&", 
+      RowBox[{"0", "<", "v", "<", "1"}], "&&", 
+      RowBox[{"0", "<", "u", "<", "1"}], "&&", 
+      RowBox[{"0", "<", "s", "<", "d"}]}], ",", "u"}], "]"}], ",", 
+   RowBox[{
+    RowBox[{"0", "<", "v", "<", "1"}], "&&", 
+    RowBox[{"0", "<", "u", "<", "1"}], "&&", 
+    RowBox[{"0", "<", "s", "<", "d"}]}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.9760530777036915`*^9, 3.976053137457138*^9}},
+ CellLabel->"In[57]:=",ExpressionUUID->"8bfb88ae-9e61-cf49-b6c0-03822e8489d4"],
+
+Cell[BoxData["$Aborted"], "Output",
+ CellChangeTimes->{3.976053118323742*^9, 3.976053148727648*^9},
+ CellLabel->"Out[57]=",ExpressionUUID->"6e21d7cb-9035-524c-bc7d-4462c5b06483"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"FullSimplify", "[", 
+  RowBox[{
+   RowBox[{"Solve", "[", 
+    RowBox[{
+     RowBox[{"CRCase2", "==", "CRAloneKnownV"}], ",", "u"}], "]"}], ",", 
+   RowBox[{"Assumptions", "->", 
+    RowBox[{
+     RowBox[{"0", "<", "v", "<", "1"}], "&&", 
+     RowBox[{"0", "<", "u", "<", "1"}], "&&", 
+     RowBox[{"0", "<", "s", "<", "d"}]}]}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.9760531517919674`*^9, 3.976053169824787*^9}},
+ CellLabel->"In[59]:=",ExpressionUUID->"21eed5db-8501-ab47-a895-d4ddd30ea7a0"],
+
+Cell[BoxData[
+ TemplateBox[<|"shortenedBoxes" -> TagBox[
+     RowBox[{"{", 
+       RowBox[{
+         RowBox[{"{", 
+           RowBox[{"u", "\[Rule]", 
+             RowBox[{
+               RowBox[{"-", 
+                 FractionBox[
+                  RowBox[{
+                    RowBox[{"4", " ", "d"}], "-", 
+                    RowBox[{"8", " ", "s"}], "-", 
+                    RowBox[{"8", " ", "d", " ", "v"}], "+", 
+                    RowBox[{"12", " ", "s", " ", "v"}], "+", 
+                    RowBox[{"2", " ", "d", " ", "s", " ", "v"}], "-", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", "v"}], "+", 
+                    RowBox[{"4", " ", "d", " ", 
+                    SuperscriptBox["v", "2"]}], "-", 
+                    RowBox[{"2", " ", "d", " ", "s", " ", 
+                    SuperscriptBox["v", "2"]}], "-", 
+                    RowBox[{"4", " ", "s", " ", 
+                    SuperscriptBox["v", "3"]}], "+", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", 
+                    SuperscriptBox["v", "3"]}], "+", 
+                    RowBox[{"2", " ", "d", " ", "s", " ", 
+                    SqrtBox[
+                    RowBox[{"2", "-", 
+                    SuperscriptBox["v", "2"]}]]}], "-", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", 
+                    SqrtBox[
+                    RowBox[{"2", "-", 
+                    SuperscriptBox["v", "2"]}]]}], "-", 
+                    RowBox[{"2", " ", "d", " ", "s", " ", "v", " ", 
+                    SqrtBox[
+                    RowBox[{"2", "-", 
+                    SuperscriptBox["v", "2"]}]]}], "+", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", 
+                    SuperscriptBox["v", "2"], " ", 
+                    SqrtBox[
+                    RowBox[{"2", "-", 
+                    SuperscriptBox["v", "2"]}]]}]}], 
+                  RowBox[{"3", " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"4", " ", "d"}], "-", 
+                    RowBox[{"4", " ", "d", " ", "v"}], "-", 
+                    RowBox[{"4", " ", "s", " ", "v"}], "+", 
+                    RowBox[{"2", " ", "d", " ", "s", " ", "v"}], "-", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", "v"}], "+", 
+                    RowBox[{"4", " ", "s", " ", 
+                    SuperscriptBox["v", "2"]}], "-", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", 
+                    SuperscriptBox["v", "2"]}], "+", 
+                    RowBox[{"2", " ", "d", " ", "s", " ", 
+                    SqrtBox[
+                    RowBox[{"2", "-", 
+                    SuperscriptBox["v", "2"]}]]}], "-", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", 
+                    SqrtBox[
+                    RowBox[{"2", "-", 
+                    SuperscriptBox["v", "2"]}]]}], "-", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", "v", " ", 
+                    SqrtBox[
+                    RowBox[{"2", "-", 
+                    SuperscriptBox["v", "2"]}]]}]}], ")"}]}]]}], "-", 
+               FractionBox[
+                RowBox[{
+                  SuperscriptBox["2", 
+                   RowBox[{"1", "/", "3"}]], " ", 
+                  RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"-", 
+                    SuperscriptBox[
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"4", " ", "d"}], "-", 
+                    RowBox[{"8", " ", "s"}], "-", 
+                    RowBox[{"8", " ", "d", " ", "v"}], "+", 
+                    TemplateBox[{"15"}, "OutputSizeLimit`Skeleton"], "+", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", 
+                    SuperscriptBox["v", "2"], " ", 
+                    SqrtBox[
+                    RowBox[{"2", "-", 
+                    SuperscriptBox["v", "2"]}]]}]}], ")"}], "2"]}], "+", 
+                    RowBox[{"3", " ", 
+                    RowBox[{"(", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], ")"}], 
+                    " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"-", "4"}], " ", "d", " ", "v"}], "+", 
+                    RowBox[{"8", " ", "s", " ", "v"}], "+", 
+                    TemplateBox[{"7"}, "OutputSizeLimit`Skeleton"], "+", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", 
+                    SuperscriptBox["v", "3"]}], "-", 
+                    RowBox[{"2", " ", "d", " ", "s", " ", "v", " ", 
+                    SqrtBox[
+                    RowBox[{"2", "-", 
+                    SuperscriptBox["v", "2"]}]]}], "+", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", "v", " ", 
+                    SqrtBox[
+                    RowBox[{"2", "-", 
+                    SuperscriptBox["v", "2"]}]]}], "+", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", 
+                    SuperscriptBox["v", "2"], " ", 
+                    SqrtBox[
+                    RowBox[{"2", "-", 
+                    SuperscriptBox["v", "2"]}]]}]}], ")"}]}]}], ")"}]}], 
+                RowBox[{"3", " ", 
+                  RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"4", " ", "d"}], "-", 
+                    RowBox[{"4", " ", "d", " ", "v"}], "-", 
+                    RowBox[{"4", " ", "s", " ", "v"}], "+", 
+                    RowBox[{"2", " ", "d", " ", "s", " ", "v"}], "-", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", "v"}], "+", 
+                    RowBox[{"4", " ", "s", " ", 
+                    SuperscriptBox["v", "2"]}], "-", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", 
+                    SuperscriptBox["v", "2"]}], "+", 
+                    RowBox[{"2", " ", "d", " ", "s", " ", 
+                    SqrtBox[
+                    RowBox[{"2", "-", 
+                    SuperscriptBox["v", "2"]}]]}], "-", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", 
+                    SqrtBox[
+                    RowBox[{"2", "-", 
+                    SuperscriptBox["v", "2"]}]]}], "-", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", "v", " ", 
+                    SqrtBox[
+                    RowBox[{"2", "-", 
+                    SuperscriptBox["v", "2"]}]]}]}], ")"}], " ", 
+                  SuperscriptBox[
+                   RowBox[{"(", 
+                    RowBox[{
+                    TemplateBox[{"304"}, "OutputSizeLimit`Skeleton"], "+", 
+                    SqrtBox[
+                    RowBox[{
+                    SuperscriptBox[
+                    RowBox[{"(", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], ")"}], 
+                    "2"], "+", 
+                    RowBox[{"4", " ", 
+                    SuperscriptBox[
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], 
+                    "3"]}]}]]}], ")"}], 
+                   RowBox[{"1", "/", "3"}]]}]], "+", 
+               FractionBox[
+                SuperscriptBox[
+                 RowBox[{"(", 
+                   RowBox[{
+                    RowBox[{"1600", " ", 
+                    SuperscriptBox["d", "3"]}], "-", 
+                    RowBox[{"960", " ", 
+                    SuperscriptBox["d", "2"], " ", "s"}], "-", 
+                    RowBox[{"1536", " ", "d", " ", 
+                    SuperscriptBox["s", "2"]}], "+", 
+                    TemplateBox[{"296"}, "OutputSizeLimit`Skeleton"], "+", 
+                    RowBox[{"48", " ", 
+                    SuperscriptBox["s", "5"], " ", 
+                    SuperscriptBox["v", "8"], " ", 
+                    SqrtBox[
+                    RowBox[{"2", "-", 
+                    SuperscriptBox["v", "2"]}]]}], "-", 
+                    RowBox[{"4", " ", 
+                    SuperscriptBox["s", "6"], " ", 
+                    SuperscriptBox["v", "8"], " ", 
+                    SqrtBox[
+                    RowBox[{"2", "-", 
+                    SuperscriptBox["v", "2"]}]]}], "+", 
+                    SqrtBox[
+                    RowBox[{
+                    SuperscriptBox[
+                    RowBox[{"(", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], ")"}], 
+                    "2"], "+", 
+                    RowBox[{"4", " ", 
+                    SuperscriptBox[
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"-", 
+                    SuperscriptBox[
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], "2"]}], 
+                    "+", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]}], ")"}], 
+                    "3"]}]}]]}], ")"}], 
+                 RowBox[{"1", "/", "3"}]], 
+                RowBox[{"3", " ", 
+                  SuperscriptBox["2", 
+                   RowBox[{"1", "/", "3"}]], " ", 
+                  RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"4", " ", "d"}], "-", 
+                    RowBox[{"4", " ", "d", " ", "v"}], "-", 
+                    RowBox[{"4", " ", "s", " ", "v"}], "+", 
+                    RowBox[{"2", " ", "d", " ", "s", " ", "v"}], "-", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", "v"}], "+", 
+                    RowBox[{"4", " ", "s", " ", 
+                    SuperscriptBox["v", "2"]}], "-", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", 
+                    SuperscriptBox["v", "2"]}], "+", 
+                    RowBox[{"2", " ", "d", " ", "s", " ", 
+                    SqrtBox[
+                    RowBox[{"2", "-", 
+                    SuperscriptBox["v", "2"]}]]}], "-", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", 
+                    SqrtBox[
+                    RowBox[{"2", "-", 
+                    SuperscriptBox["v", "2"]}]]}], "-", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", "v", " ", 
+                    SqrtBox[
+                    RowBox[{"2", "-", 
+                    SuperscriptBox["v", "2"]}]]}]}], ")"}]}]]}]}], "}"}], ",", 
+         RowBox[{"{", 
+           RowBox[{"u", "\[Rule]", 
+             TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]}], "}"}], ",", 
+         RowBox[{"{", 
+           RowBox[{"u", "\[Rule]", 
+             RowBox[{
+               RowBox[{"-", 
+                 FractionBox[
+                  RowBox[{
+                    TemplateBox[{"20"}, "OutputSizeLimit`Skeleton"], "+", 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], " ", 
+                    SuperscriptBox["v", "2"], " ", 
+                    SqrtBox[
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]]}]}], 
+                  RowBox[{"3", " ", 
+                    RowBox[{"(", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], 
+                    ")"}]}]]}], "+", 
+               FractionBox[
+                TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], 
+                TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]], "-", 
+               FractionBox[
+                TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], 
+                TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]]}]}], "}"}]}], 
+       "}"}], Short[#, 8]& ], "line" -> 58, "sessionID" -> 
+   34086890888121104727, "byteCount" -> 1039392, "size" -> 8, "stored" -> 
+   False, "expr" -> Missing["NotStored"], "wrap" -> OutputSizeLimit`Defer, 
+   "version" -> 1|>,
+  "OutputSizeLimitTemplate"]], "Output",
+ CellChangeTimes->{3.9760531575595818`*^9},
+ CellLabel->"Out[58]=",ExpressionUUID->"74fc1c40-bc5c-764b-9111-ade7aa1ce2c8"]
+}, Open  ]]
+},
+WindowSize->{1019.5, 567},
+WindowMargins->{{-1118.5, Automatic}, {Automatic, 48}},
+FrontEndVersion->"14.0 for Microsoft Windows (64-bit) (December 12, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"3b570c9e-f8af-e244-9fd8-68c98bada24e"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 1165, 21, 242, "Text",ExpressionUUID->"5704678a-93ae-2a4d-baf4-fa9cda6f53d3"],
+Cell[CellGroupData[{
+Cell[1748, 45, 1648, 44, 67, "Input",ExpressionUUID->"5a9addc3-3c10-3e46-ac75-92061952b25b"],
+Cell[3399, 91, 417, 12, 48, "Output",ExpressionUUID->"bdc4a57a-0b69-c348-a0b8-d6fb2126dcbd"]
+}, Open  ]],
+Cell[3831, 106, 477, 9, 58, "Text",ExpressionUUID->"dd3704f2-9452-384f-b390-d68d1a3f9953"],
+Cell[CellGroupData[{
+Cell[4333, 119, 1606, 44, 86, "Input",ExpressionUUID->"222a6651-84a3-be43-83b5-169416964b6a"],
+Cell[5942, 165, 849, 26, 79, "Output",ExpressionUUID->"9bdfd926-b600-674b-917c-5fbde5bb249d"]
+}, Open  ]],
+Cell[6806, 194, 368, 9, 81, "Text",ExpressionUUID->"5afda14c-ce28-6a47-877d-e1a8fa4da692"],
+Cell[CellGroupData[{
+Cell[7199, 207, 872, 23, 86, "Input",ExpressionUUID->"1790bd2f-64d7-f84b-81fa-4f1272d5c939"],
+Cell[8074, 232, 2860, 85, 100, "Output",ExpressionUUID->"42c39700-a0ae-a144-b912-c20cc093ea50"]
+}, Open  ]],
+Cell[10949, 320, 317, 7, 35, "Text",ExpressionUUID->"f407cba7-a904-2c42-a135-8a053915c72d"],
+Cell[CellGroupData[{
+Cell[11291, 331, 633, 17, 28, "Input",ExpressionUUID->"a8da8378-443f-b743-8e86-b3f5ebde1bd5"],
+Cell[11927, 350, 438, 13, 60, "Output",ExpressionUUID->"497da2d3-571b-cb4f-9ec1-a50fd9dec744"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[12402, 368, 635, 15, 28, "Input",ExpressionUUID->"8bfb88ae-9e61-cf49-b6c0-03822e8489d4"],
+Cell[13040, 385, 178, 2, 32, "Output",ExpressionUUID->"6e21d7cb-9035-524c-bc7d-4462c5b06483"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[13255, 392, 518, 12, 28, "Input",ExpressionUUID->"21eed5db-8501-ab47-a895-d4ddd30ea7a0"],
+Cell[13776, 406, 11970, 265, 218, "Output",ExpressionUUID->"74fc1c40-bc5c-764b-9111-ade7aa1ce2c8"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+
