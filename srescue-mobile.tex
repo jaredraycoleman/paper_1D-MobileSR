@@ -57,7 +57,7 @@
 
 \begin{document}
 
-\title{The Good Cop and the Oblivious Fugitive}
+\title{The Fast Cop, the Slow Cop, and the Oblivious Fugitive}
 
 \author{
 Evangelos Kranakis\inst{1}\inst{2}
@@ -77,9 +77,9 @@ Research supported in part by NSERC Discovery grant.
 \centerline{\today}
 
 \begin{abstract}
-A fugitive has escaped from jail and is running away from it along a half-infinite street at constant speed $v <1$. The jail is placed at the origin of the infinite half-line $[0,+\infty)$. A policeman (modelled as an autonomous mobile agent) starting at a point (denoted by $s$) on this street wants to catch the fugitive and bring him back to jail. The policeman and the fugitive start at the same time but the policeman does not know the starting position (denoted by $d$) of the fugitive. 
+Officer Judy Hopps of the Zootopia Police Department faces a challenge: a fugitive has escaped from jail and is fleeing along Savanna Central's main street at constant speed $v < 1$. Judy, starting at position $s$ on this half-infinite street $[0,+\infty)$, must catch the fugitive and return him to jail at the origin. The catch? She doesn't know the fugitive's starting position $d$. To make matters more interesting, her usual partner Nick Wilde is on vacation, leaving her paired with the friendly but slow Officer Clawhauser.
 
-We give search and delivery algorithms to solve the problem under two possible scenarios: 1) when $v$ is known and $d$ is unknown, and 2) when both $v$ and $d$ are unknown to the policeman. We prove that the corresponding competitive ratios with respect to an all powerful searcher that knows both $v$ and $d$ are $1+\frac{v + \sqrt{2-v^2}}{1-v}$ and $1 + \frac{2(1+v)}{1-v}$, respectively, and these are optimal.
+We give search and delivery algorithms to solve Judy's problem under two scenarios: 1) when $v$ is known and $d$ is unknown, and 2) when both $v$ and $d$ are unknown. We prove that the corresponding competitive ratios with respect to an omniscient searcher are $1+\frac{v + \sqrt{2-v^2}}{1-v}$ and $1 + \frac{2(1+v)}{1-v}$, respectively, and these are optimal. We also analyze a two-agent variant---should Judy and Clawhauser split up?---and characterize when cooperation outperforms going solo.
 
 \vspace{0.5cm}
 \noindent
@@ -131,8 +131,21 @@ We give search and delivery algorithms to solve the problem under two possible s
 
 \section{Introduction}
 
-%\hl{Focus on variations of cops and robbers}
-The ``cops and robbers'' problem were introduced by Nowakowski and Winkler in~\cite{nowakowski1983vertex} and Quilliot~\cite{quilliot1985short}, independently, cf., also Frieze et al.~\cite{frieze2012variations}. These are perfect information games with two players consisting of a set of cops and a robber which can move along the vertices of a graph. The cops and the robber occupy vertices of the graph in alternate rounds and the game ends if the cops and the robber are colocated on a vertex of the graph. For additional information on  search and robber problems, cf. Bonato~\cite{bonato2011game}.
+\begin{figure}[!htb]
+\begin{center}
+\begin{tabular}{cc}
+\includegraphics[height=4cm]{FIG/zootopia/Judy_Hopps.png} &
+\includegraphics[height=4cm]{FIG/zootopia/Officer_Clawhauser.png} \\
+(a) Officer Judy Hopps & (b) Officer Clawhauser
+\end{tabular}
+\end{center}
+\caption{The officers of the Zootopia Police Department: (a) Judy Hopps, an ambitious and fast rabbit officer, and (b) Benjamin Clawhauser, a friendly but slow cheetah who works the front desk.}
+\label{fig:zootopia-officers}
+\end{figure}
+
+Officer Judy Hopps (Figure~\ref{fig:zootopia-officers}a) is an ambitious, up-and-coming member of the Zootopia Police Department. Tomorrow she is scheduled for patrol duty along Savanna Central's main street---a long, straight road leading away from the city's central jail. Her usual partner, Nick Wilde, is on vacation, so she will be paired with Officer Benjamin Clawhauser (Figure~\ref{fig:zootopia-officers}b). Clawhauser is a friendly cheetah who typically works the front desk; while very personable, he is not exactly known for his speed. Judy wants to be prepared: if a fugitive escapes during her shift, should she and Clawhauser split up to cover more ground, or would she be better off pursuing the fugitive alone while Clawhauser stays behind?
+
+This scenario motivates the algorithmic problem we study in this paper. The ``cops and robbers'' problem was introduced by Nowakowski and Winkler in~\cite{nowakowski1983vertex} and Quilliot~\cite{quilliot1985short}, independently, cf., also Frieze et al.~\cite{frieze2012variations}. These are perfect information games with two players consisting of a set of cops and a robber which can move along the vertices of a graph. The cops and the robber occupy vertices of the graph in alternate rounds and the game ends if the cops and the robber are colocated on a vertex of the graph. For additional information on search and robber problems, cf. Bonato~\cite{bonato2011game}.
 
 We study a similar problem here whereby a good cop wants to catch an oblivious fugitive and bring him back to jail. The cop is ``good'' because it wants to employ the fairest and fastest algorithm, depending on its knowledge about the fugitive, while the fugitive is ``oblivious'' in that it moves away from the origin without ever changing its behaviour throughout the search process. The algorithm is executed in a continuous (as opposed to discrete) setting on the infinite half-line.
 
