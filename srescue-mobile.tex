@@ -1,6 +1,6 @@
 %%%%%%%%%%%
 %\documentclass[10pt]{article}
-\documentclass{llncs}
+\documentclass[11pt]{llncs}
 \pagestyle{plain}
 \usepackage{color}
 \usepackage{graphicx}
@@ -54,21 +54,22 @@
 
 \newcommand\JC[1]{{\color{blue} JC: #1}}         % Jared:    Use \JC{my note}
 
+\newcommand\EK[1]{{\color{red} EK: #1}}         % Evangelos:    Use \EK{my note}
 
 \begin{document}
 
 \title{The Fast Cop, the Slow Cop, and the Oblivious Fugitive}
 
 \author{
-Evangelos Kranakis\inst{1}\inst{2}
-%\and
-%Danny Krizanc\inst{2}
+Jared Coleman\inst{1}
+\and
+Evangelos Kranakis\inst{2}\inst{3}
 }
 
 \institute{
+Dept. of Computer Science, Loyola Mount University, Los Angeles, CA, USA
+\and
 School of Computer Science, Carleton University, Ottawa, Ontario, Canada.
-%\and
-%Dep. of Math. \& Computer Science, Wesleyan University, Middletown CT, USA.
 \and
 Research supported in part by NSERC Discovery grant.
 }
@@ -80,6 +81,8 @@ Research supported in part by NSERC Discovery grant.
 Officer Judy Hopps of the Zootopia Police Department faces a challenge: a fugitive has escaped from jail and is fleeing along Savanna Central's main street at constant speed $v < 1$. Judy, starting at position $s$ on this half-infinite street $[0,+\infty)$, must catch the fugitive and return him to jail at the origin. The catch? She doesn't know the fugitive's starting position $d$. To make matters more interesting, her usual partner Nick Wilde is on vacation, leaving her paired with the friendly but slow Officer Clawhauser.
 
 We give search and delivery algorithms to solve Judy's problem under two scenarios: 1) when $v$ is known and $d$ is unknown, and 2) when both $v$ and $d$ are unknown. We prove that the corresponding competitive ratios with respect to an omniscient searcher are $1+\frac{v + \sqrt{2-v^2}}{1-v}$ and $1 + \frac{2(1+v)}{1-v}$, respectively, and these are optimal. We also analyze a two-agent variant---should Judy and Clawhauser split up?---and characterize when cooperation outperforms going solo.
+
+Further, we consider the competitive ratio of an algorithm for the case of two cooperating policemen with different speeds starting from the same point at the same time to capture the fugitive and bring him to jail and compare it to the single policeman case. 
 
 \vspace{0.5cm}
 \noindent
@@ -187,7 +190,7 @@ where the infimum is taken over all possible delivery algorithms $A$ which succe
 
 Competitive algorithms for search have been considered in numerous scientific studies due to their importance for the analysis of algorithms in theoretical computer science. The seminal book by Alpern and Gal~\cite{alpern03} is a good source for studies on search games and rendezvous. Baeza-Yates et al.~\cite{baezayates1993searching} initiated and considered search problems by a single robot in an infinite line or in the plane. Our approach will not involve the doubling, but is worth mentioning Chrobak and Kenyon-Mathieu in~\cite{chrobak2006sigact} which give a survey of the “doubling” method which uses geometrically increasing estimates on the optimal solution to produce fragments of the desired solution in online and offline approximation algorithms. 
 
-The concept of searching for moving target was initiated by McCabe~\cite{mccabe1974searching} in a stochastic setting on an infinite discrete line. Demaine et al.~\cite{demaine2006online} initiated search analysis when turning is counted as a cost. Bose et al.~\cite{bose2013revisiting,bose2017general} derive optimal competitive search strategies for a search problem variant where the target is moving and the searcher’s cost at each step is a constant times the length of the step plus a fixed constant turn cost. Bonato et al.~\cite{bonato2020probabilistically} study $p$-Faulty Search, whereby a probabilistically faulty robot searches the half-line for a hidden item. More recently, Coleman et al.~\cite{coleman2023line} consider and analyze knowledge competitive ratio tradeoffs in searching for a mobile target in an infinite line and Coleman et al. in~\cite{iwoca_journal_version} obtain optimal competitive ratio when the speed of the mobile is unknown. Additional work in more complex topologies can be found in Ortiz and Schuierer~\cite{lopez2001ultimate} for search on $m$-rays, and more generally in Koutsoupias et al.~\cite{koutsoupias1996searching} which combinatorial optimization problems related to searching a known graph, for a target located at an unknown node.  
+The concept of searching for a moving target was initiated by McCabe~\cite{mccabe1974searching} in a stochastic setting on an infinite discrete line. Demaine et al.~\cite{demaine2006online} initiated search analysis when turning is counted as a cost. Bose et al.~\cite{bose2013revisiting,bose2017general} derive optimal competitive search strategies for a search problem variant where the target is moving and the searcher’s cost at each step is a constant times the length of the step plus a fixed constant turn cost. Bonato et al.~\cite{bonato2020probabilistically} study $p$-Faulty Search, whereby a probabilistically faulty robot searches the half-line for a hidden item. More recently, Coleman et al.~\cite{coleman2023line} consider and analyze knowledge competitive ratio tradeoffs in searching for a mobile target in an infinite line and Coleman et al. in~\cite{iwoca_journal_version} obtain optimal competitive ratio when the speed of the mobile is unknown. Additional work in more complex topologies can be found in Ortiz and Schuierer~\cite{lopez2001ultimate} for search on $m$-rays, and more generally in Koutsoupias et al.~\cite{koutsoupias1996searching} which combinatorial optimization problems related to searching a known graph, for a target located at an unknown node.  
 
 Related to our present work there are also several recent studies on the search and delivery problem especially due to its applicability to automated robotic delivery of objects. Carvalho et al.~\cite{del_carvalho_graph} analyze the problem on graphs, and Coleman et al.\cite{coleman2024optimal} consider the problem of how to efficiently recover and complete the delivery of an object in the plane under the presence of a faulty robot. Closely related to our study is the recent work of Coleman et al.~\cite{coleman2023search} which analyzed the search and delivery problem considered in our present paper for a static target in both a finite segment and the infinite half-line.
 
