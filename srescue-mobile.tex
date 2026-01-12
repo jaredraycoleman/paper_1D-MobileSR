@@ -712,11 +712,23 @@ CR_2 &= \sup_{d > s} CR_2(d) = \lim_{d \to \infty} CR_2(d) = \frac{\frac{2}{1+u}
 
 \subsection{Comparison with Single-Agent Algorithm}
 
-If the speed $v$ is known, the fast agent could alternatively execute the single-agent algorithm from Section~\ref{Speed $v$ is Known to the Searcher}.
+If the speed $v$ is known, the fast agent could alternatively execute the single-agent algorithm from Section~\ref{Speed $v$ is Known to the Searcher}, which achieves a competitive ratio of $1 + \frac{v + \sqrt{2-v^2}}{1-v}$.
 
-The split-up algorithm may outperform the single-agent algorithm in certain parameter regimes. Specifically, when the slow agent's speed $u$ is sufficiently larger than the fugitive's speed $v$, the cooperative strategy can reduce the competitive ratio by having the slow agent intercept the fugitive while the fast agent handles the delivery.
+The split-up algorithm may outperform the single-agent algorithm in certain parameter regimes. Figure~\ref{fig:split-up-comparison} shows the region in the $(u, v)$ parameter space where the split-up algorithm achieves a lower competitive ratio than the single-agent algorithm.
 
-\JC{TODO: determine the conditions under which the split-up algorithm outperforms the single-agent algorithm.}
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=10cm]{FIG/split_up_comparison.pdf}
+\end{center}
+\caption{The shaded region shows parameter values $(u, v)$ for which the split-up algorithm outperforms the single-agent algorithm (when $v$ is known).}
+\label{fig:split-up-comparison}
+\end{figure}
+
+The results are intuitive: when the slow agent's speed $u$ is sufficiently larger than the fugitive's speed $v$, it becomes advantageous for the agents to split up, with the slow agent intercepting the fugitive while the fast agent positions itself for efficient delivery. However, if the fugitive's speed $v$ is too high, the benefit of the slow agent's assistance diminishes, as it cannot catch up to the fugitive quickly enough.
+
+While the exact boundary of the advantageous region does not admit a simple closed-form expression, it can be computed numerically or using symbolic tools such as Mathematica.
+
+Note that the split-up algorithm requires knowledge of $v$. If $v$ is unknown, the competitive ratio of the split-up algorithm is unbounded, since $\lim_{v \to 1^-} \frac{3+v}{1-v} = \infty$. In contrast, the single-agent algorithm from Section~\ref{Speed $v$ Is Unknown to the Searcher} achieves a bounded competitive ratio of $1 + \frac{2(1+v)}{1-v}$ even when $v$ is unknown. Thus, when $v$ is unknown, the single-agent algorithm should be preferred.
 
 \section{Conclusion}
 \label{sec:conclusion}
