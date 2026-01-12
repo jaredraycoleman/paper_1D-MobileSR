@@ -652,10 +652,22 @@ We now consider a variation of the problem where there are two policemen availab
 
 One option is for the faster policeman to simply execute the single-agent algorithm by himself, ignoring the slower agent entirely. However, we consider an alternative approach which we call the \emph{split-up algorithm}. In this algorithm, the fast agent moves toward the jail (origin) while the slow agent moves away from the jail. If the fast agent reaches the jail without finding the fugitive, then it must be that $d > s$, and so the fast agent starts moving away from the jail.
 
-We analyze the competitive ratio of this algorithm. Two cases may occur depending on which agent catches the fugitive first.
+\begin{theorem}[Competitive Ratio of the Split-Up Algorithm]
+\label{thm:split-up}
+The competitive ratio of the split-up algorithm is
+$$
+CR = \begin{cases}
+\frac{3+v}{1-v} & \text{if } \frac{d-s}{u-v} \geq \frac{d+s}{1-v}, \\[10pt]
+\frac{2(1-v)}{u(1+u)(u-v)} & \text{if } \frac{d-s}{u-v} < \frac{d+s}{1-v}.
+\end{cases}
+$$
+\end{theorem}
+
+\begin{proof}
+We analyze the competitive ratio of this algorithm. Note that if $d \leq s$, the fast agent catches the fugitive while traveling to the origin, achieving optimal competitive ratio $1$. Since an adversary would not choose such a $d$, we assume $d > s$ in what follows. Two cases may occur depending on which agent catches the fugitive first.
 
 {\bf Case 1: The fast agent catches the fugitive.}\\
-If the fast agent passes the slow agent before the slow agent finds the fugitive, or if $u < v$ (so the slow agent cannot catch up to the fugitive at all), then the fast agent catches the fugitive. The optimal offline time is
+This case occurs when $\frac{d-s}{u-v} \geq \frac{d+s}{1-v}$, i.e., the fast agent passes the slow agent before the slow agent finds the fugitive, or if $u \leq v$ (so the slow agent cannot catch up to the fugitive at all). The optimal offline time is
 $$
 T_{opt} = \frac{2(d-s)}{1-v} + s,
 $$
@@ -663,14 +675,18 @@ since in the optimal algorithm the fast agent goes straight to the target and re
 $$
 T_A = \frac{d+s}{1-v},
 $$
-since the fast agent first travels to the origin (time $s$), then chases the fugitive who is now at position $d + sv$ (additional time $\frac{d+sv}{1-v}$). The total algorithm time including delivery is $2T_A - s$. The competitive ratio in this case is
-\begin{equation}
+since the fast agent first travels to the origin (time $s$), then chases the fugitive who is now at position $d + sv$ (additional time $\frac{d+sv}{1-v}$). The total algorithm time including delivery is $2T_A - s$. The competitive ratio as a function of $d$ is
+\begin{align}
 \label{eq:cr-case1}
-CR_1 = \frac{2 \cdot \frac{d+s}{1-v} - s}{\frac{2(d-s)}{1-v} + s} = \frac{4d}{2d - s - sv} - 1.
-\end{equation}
+CR_1(d) &= \frac{2 \cdot \frac{d+s}{1-v} - s}{\frac{2(d-s)}{1-v} + s} = \frac{4d}{2d - s(1+v)} - 1 = \frac{4}{2-s(1+v)/d} - 1.
+\end{align}
+Observe that $CR_1(d)$ is decreasing in $d$. Thus the supremum over $d > s$ is achieved as $d \to s^+$, giving
+\begin{align}
+CR_1 &= \sup_{d > s} CR_1(d) = \lim_{d \to s^+} \left( \frac{4}{2-s(1+v)/d} - 1 \right) = \frac{4}{2-(1+v)} - 1 = \frac{3+v}{1-v}.
+\end{align}
 
 {\bf Case 2: The slow agent catches the fugitive first.}\\
-This case can only occur when $u > v$. The slow agent catches the fugitive in time
+This case occurs when $u > v$ and $\frac{d-s}{u-v} < \frac{d+s}{1-v}$. The slow agent catches the fugitive in time
 $$
 T_{capture} = \frac{d-s}{u-v}.
 $$
@@ -678,17 +694,21 @@ At this time, the slow agent (with the fugitive) is at location
 $$
 L_{capture} = s + \frac{d-s}{u-v} \cdot u = s + \frac{u(d-s)}{u-v}.
 $$
-Meanwhile, the fast agent has traveled to the origin and is now moving away from it. The fast agent and slow agent (now moving toward the origin with the fugitive at speed $u$) will meet. The meeting time after capture is
+Meanwhile, observe that regardless of when the slow agent catches the fugitive, the fast agent must reach the origin before the slow agent does, at which time it turns around to move back out towards the slow agent (and the target). After the slow agent catches the fugitive, it turns around and moves toward the origin at speed $u$, while the fast agent moves away from the origin at speed $1$. To compute when they meet, we use a convenient reflection trick: the meeting point of the two agents is the same as if the fast agent had started at position $-s$ (reflected around the origin) and the slow agent had started at position $s + 2(L_{capture} - s)$ (reflected around $L_{capture}$), with both agents moving toward each other from time $0$. The initial distance between these reflected positions is $2s + 2(L_{capture} - s) = 2L_{capture}$, so the meeting time is
 $$
-T_{meet} = \frac{L_{capture} - 0}{1 + u} = \frac{s + \frac{u(d-s)}{u-v}}{1+u}.
+T_{meet} = \frac{2L_{capture}}{1+u} = \frac{2s + 2(L_{capture} - s)}{1+u}.
 $$
-Note that we need to account for when the fast agent reaches the origin relative to when the slow agent catches the fugitive. The fast agent reaches the origin at time $s$, then moves outward. The competitive ratio in this case is
+The competitive ratio in this case is
 \begin{equation}
 \label{eq:cr-case2}
-CR_2 = \frac{(1-v)\left(\frac{2\left(2s + \frac{d-s}{u^2 - uv}\right)}{1+u} - s\right)}{2d - s - sv}.
+CR_2(d) = \frac{\frac{2}{1+u}\left(2s + \frac{2(d-s)}{u(u-v)}\right) - s}{s + \frac{2(d-s)}{1-v}}.
 \end{equation}
-
-Case 2 occurs when $u > v$ and the slow agent catches the fugitive before the fast agent would (i.e., the capture time for the slow agent is less than that for the fast agent).
+Observe that $CR_2(d)$ is increasing in $d$. Thus the supremum over $d > s$ is achieved as $d \to \infty$, giving
+\begin{align}
+CR_2 &= \sup_{d > s} CR_2(d) = \lim_{d \to \infty} CR_2(d) = \frac{\frac{2}{1+u} \cdot \frac{2}{u(u-v)}}{\frac{2}{1-v}} = \frac{2(1-v)}{u(1+u)(u-v)}.
+\end{align}
+~\qed
+\end{proof}
 
 \subsection{Comparison with Single-Agent Algorithm}
 
