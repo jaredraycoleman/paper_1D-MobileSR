@@ -1,6 +1,6 @@
 %%%%%%%%%%%
 %\documentclass[10pt]{article}
-\documentclass{llncs}
+\documentclass[11pt]{llncs}
 \pagestyle{plain}
 \usepackage{color}
 \usepackage{graphicx}
@@ -54,21 +54,22 @@
 
 \newcommand\JC[1]{{\color{blue} JC: #1}}         % Jared:    Use \JC{my note}
 
+\newcommand\EK[1]{{\color{red} EK: #1}}         % Evangelos:    Use \EK{my note}
 
 \begin{document}
 
-\title{The Good Cop and the Oblivious Fugitive}
+\title{The Good Cops and the Oblivious Fugitive}
 
 \author{
-Evangelos Kranakis\inst{1}\inst{2}
-%\and
-%Danny Krizanc\inst{2}
+Jared Coleman\inst{1}
+\and
+Evangelos Kranakis\inst{2}\inst{3}
 }
 
 \institute{
+Dept. of Computer Science, Loyola Mount University, Los Angeles, CA, USA
+\and
 School of Computer Science, Carleton University, Ottawa, Ontario, Canada.
-%\and
-%Dep. of Math. \& Computer Science, Wesleyan University, Middletown CT, USA.
 \and
 Research supported in part by NSERC Discovery grant.
 }
@@ -80,6 +81,8 @@ Research supported in part by NSERC Discovery grant.
 A fugitive has escaped from jail and is running away from it along a half-infinite street at constant speed $v <1$. The jail is placed at the origin of the infinite half-line $[0,+\infty)$. A policeman (modelled as an autonomous mobile agent) starting at a point (denoted by $s$) on this street wants to catch the fugitive and bring him back to jail. The policeman and the fugitive start at the same time but the policeman does not know the starting position (denoted by $d$) of the fugitive. 
 
 We give search and delivery algorithms to solve the problem under two possible scenarios: 1) when $v$ is known and $d$ is unknown, and 2) when both $v$ and $d$ are unknown to the policeman. We prove that the corresponding competitive ratios with respect to an all powerful searcher that knows both $v$ and $d$ are $1+\frac{v + \sqrt{2-v^2}}{1-v}$ and $1 + \frac{2(1+v)}{1-v}$, respectively, and these are optimal.
+
+Further, we consider the competitive ratio of an algorithm for the case of two cooperating policemen with different speeds starting from the same point at the same time to capture the fugitive and bring him to jail and compare it to the single policeman case. 
 
 \vspace{0.5cm}
 \noindent
@@ -132,7 +135,7 @@ We give search and delivery algorithms to solve the problem under two possible s
 \section{Introduction}
 
 %\hl{Focus on variations of cops and robbers}
-The ``cops and robbers'' problem were introduced by Nowakowski and Winkler in~\cite{nowakowski1983vertex} and Quilliot~\cite{quilliot1985short}, independently, cf., also Frieze et al.~\cite{frieze2012variations}. These are perfect information games with two players consisting of a set of cops and a robber which can move along the vertices of a graph. The cops and the robber occupy vertices of the graph in alternate rounds and the game ends if the cops and the robber are colocated on a vertex of the graph. For additional information on  search and robber problems, cf. Bonato~\cite{bonato2011game}.
+The ``cops and robbers'' problem was introduced by Nowakowski and Winkler in~\cite{nowakowski1983vertex} and Quilliot~\cite{quilliot1985short}, independently, cf., also Frieze et al.~\cite{frieze2012variations}. These are perfect information games with two players consisting of a set of cops and a robber which can move along the vertices of a graph. The cops and the robber occupy vertices of the graph in alternate rounds and the game ends if the cops and the robber are colocated on a vertex of the graph. For additional information on  search and robber problems, cf. Bonato~\cite{bonato2011game}.
 
 We study a similar problem here whereby a good cop wants to catch an oblivious fugitive and bring him back to jail. The cop is ``good'' because it wants to employ the fairest and fastest algorithm, depending on its knowledge about the fugitive, while the fugitive is ``oblivious'' in that it moves away from the origin without ever changing its behaviour throughout the search process. The algorithm is executed in a continuous (as opposed to discrete) setting on the infinite half-line.
 
@@ -172,7 +175,7 @@ where the infimum is taken over all possible delivery algorithms $A$ on the circ
 
 Competitive algorithms for search have been considered in numerous scientific studies due to their importance for the analysis of algorithms in theoretical computer science. The seminal book by Alpern and Gal~\cite{alpern03} is a good source for studies on search games and rendezvous. Baeza-Yates et al.~\cite{baezayates1993searching} initiated and considered search problems by a single robot in an infinite line or in the plane. Our approach will not involve the doubling, but is worth mentioning Chrobak and Kenyon-Mathieu in~\cite{chrobak2006sigact} which give a survey of the “doubling” method which uses geometrically increasing estimates on the optimal solution to produce fragments of the desired solution in online and offline approximation algorithms. 
 
-The concept of searching for moving target was initiated by McCabe~\cite{mccabe1974searching} in a stochastic setting on an infinite discrete line. Demaine et al.~\cite{demaine2006online} initiated search analysis when turning is counted as a cost. Bose et al.~\cite{bose2013revisiting,bose2017general} derive optimal competitive search strategies for a search problem variant where the target is moving and the searcher’s cost at each step is a constant times the length of the step plus a fixed constant turn cost. Bonato et al.~\cite{bonato2020probabilistically} study $p$-Faulty Search, whereby a probabilistically faulty robot searches the half-line for a hidden item. More recently, Coleman et al.~\cite{coleman2023line} consider and analyze knowledge competitive ratio tradeoffs in searching for a mobile target in an infinite line and Coleman et al. in~\cite{iwoca_journal_version} obtain optimal competitive ratio when the speed of the mobile is unknown. Additional work in more complex topologies can be found in Ortiz and Schuierer~\cite{lopez2001ultimate} for search on $m$-rays, and more generally in Koutsoupias et al.~\cite{koutsoupias1996searching} which combinatorial optimization problems related to searching a known graph, for a target located at an unknown node.  
+The concept of searching for a moving target was initiated by McCabe~\cite{mccabe1974searching} in a stochastic setting on an infinite discrete line. Demaine et al.~\cite{demaine2006online} initiated search analysis when turning is counted as a cost. Bose et al.~\cite{bose2013revisiting,bose2017general} derive optimal competitive search strategies for a search problem variant where the target is moving and the searcher’s cost at each step is a constant times the length of the step plus a fixed constant turn cost. Bonato et al.~\cite{bonato2020probabilistically} study $p$-Faulty Search, whereby a probabilistically faulty robot searches the half-line for a hidden item. More recently, Coleman et al.~\cite{coleman2023line} consider and analyze knowledge competitive ratio tradeoffs in searching for a mobile target in an infinite line and Coleman et al. in~\cite{iwoca_journal_version} obtain optimal competitive ratio when the speed of the mobile is unknown. Additional work in more complex topologies can be found in Ortiz and Schuierer~\cite{lopez2001ultimate} for search on $m$-rays, and more generally in Koutsoupias et al.~\cite{koutsoupias1996searching} which combinatorial optimization problems related to searching a known graph, for a target located at an unknown node.  
 
 Related to our present work there are also several recent studies on the search and delivery problem especially due to its applicability to automated robotic delivery of objects. Carvalho et al.~\cite{del_carvalho_graph} analyze the problem on graphs, and Coleman et al.\cite{coleman2024optimal} consider the problem of how to efficiently recover and complete the delivery of an object in the plane under the presence of a faulty robot. Closely related to our study is the recent work of Coleman et al.~\cite{coleman2023search} which analyzed the search and delivery problem considered in our present paper for a static target in both a finite segment and the infinite half-line.
 
@@ -231,7 +234,9 @@ $d$ Unknown \& $v$ Unknown & $1 + \frac{2(1+v)}{1-v}$ \\
 
 %There remains to close the gap between the upper and lower bounds on the competitive ratios for the case when $d$ is unknown and $v$ is known.
 
-In the rest of the paper we consider the case when $d$ is unknown to the searcher. In Section~\ref{Speed $v$ is Known to the Searcher}  we consider the case when $v$ is known to the searcher, and in Section~\ref{Speed $v$ Is Unknown to the Searcher} the case when $v$ is unknown. In both instances we prove tight upper and lower bounds.
+In the rest of the paper we consider the case when $d$ is unknown to the searcher. In Section~\ref{Speed $v$ is Known to the Searcher}  we consider the case when $v$ is known to the searcher, and in Section~\ref{Speed $v$ Is Unknown to the Searcher} the case when $v$ is unknown. In both instances we prove tight upper and lower bounds. 
+
+\EK{Finally, in Section}~\ref{sec:two-agents} \EK{we analyze the competitive ratio of the ``split-up'' algorithm, namely a cooperative algorithm involving a fast policeman and and a slow one to capture the fugitive and compare it to the case of a single policeman.}
 
 
 \section{Speed $v$ is Known to the Searcher}
