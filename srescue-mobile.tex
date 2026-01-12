@@ -662,7 +662,13 @@ We now return to Judy's original question: should she and Clawhauser split up? R
 
 \subsection{The Split-Up Algorithm}
 
-One option is for Hopps to simply execute the single-agent algorithm by herself, ignoring Clawhauser entirely. However, we consider an alternative approach which we call the \emph{split-up algorithm}. In this algorithm, Hopps moves toward the jail (origin) while Clawhauser moves away from the jail. If Hopps reaches the jail without finding the fugitive, then it must be that $d > s$, and so she starts moving away from the jail.
+One option is for Hopps to simply execute the single-agent algorithm by herself, ignoring Clawhauser entirely. However, we consider an alternative approach which we call the \emph{split-up algorithm}:
+\begin{itemize}
+\item Hopps moves toward the jail (origin) while Clawhauser moves away from the jail in pursuit of the fugitive.
+\item If Hopps reaches the jail without encountering the fugitive, she knows $d > s$ and turns around to move away from the jail.
+\item Hopps continues until she either catches the fugitive herself, or meets Clawhauser returning with the captured fugitive.
+\end{itemize}
+Note that Hopps may catch up to and pass Clawhauser before he finds the fugitive, in which case Clawhauser provides no assistance with the capture or delivery.
 
 \begin{theorem}[Competitive Ratio of the Split-Up Algorithm]
 \label{thm:split-up}
